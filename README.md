@@ -1,7 +1,6 @@
 # skillz
 
-Claude Code skills.
-
+Just some agent skills in a place where I can get them. 
 ## Install
 
 ```
