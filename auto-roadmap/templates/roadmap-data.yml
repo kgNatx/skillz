@@ -1,0 +1,48 @@
+# Starter sidecar for the auto-roadmap skill.
+# Copy to a project root as roadmap-data.yml, adjust $config, replace the example
+# stream/feature with real ones. The skill reads $config on every run — projects
+# with non-default conventions edit this block and the skill adapts.
+
+$config:
+  narrative: ROADMAP.md            # the prose roadmap this sidecar syncs against
+  threads: project-threads.md      # working-set tracker (project-threads skill); omit if none
+  now: false                       # true ONLY after the consuming page's schema accepts a per-feature now: field
+  epics: false                     # true ONLY after the consuming page renders epic tags (epic data may still ship earlier when the page's schema strips unknown keys — the validator warns, not errors)
+  validate: ""                     # project validator command; empty = the skill's bundled validate-sidecar.py
+  status_vocab: [in-progress, next-up, shipped, later, parked]
+  sub_state_vocab: [todo, doing, done]
+  narrative_sections:              # prose heading -> status bucket
+    "Shipped": shipped
+    "In progress": in-progress
+    "Near-term": next-up
+    "Planned": later
+    "Parked": parked
+    "Out of scope": parked
+  id_prefix: f-
+
+updated: "1970-01-01"              # bumped by auto-roadmap on every sync
+
+streams:
+  - { id: example, name: Example stream, short: EXM }
+
+# epics:                           # partner-facing projection of the tracker's ## Epics registry; e- ids (streams are the permanent areas)
+#   - { id: e-example-arc, title: Example arc }
+
+features:
+  - id: f-example
+    title: Example feature          # customer-capability terms, not internal mechanics
+    stream: example
+    # epic: e-example-arc           # joins this card (and threads with the same epic: header) to one initiative
+    status: later
+    progress: 0
+    desc: >-                        # <=80 words; the roadmap is a shape, not a changelog
+      One-paragraph customer-readable description of what this delivers.
+    owner: your-name
+    ship: v1.0
+    # now: "currently: ..."         # one live-activity line; written by auto-roadmap only when $config.now is true
+    # subs:                         # only for in-flight features with distinct observed phases
+    #   - { txt: First phase, state: doing }
+    # deps: [f-other-feature]
+    # notes: Optional italic aside shown on the card.
+
+milestones: []
